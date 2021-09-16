@@ -59,7 +59,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void createUserIdNotExists() {
+    void createUserIdAndEmailNotExist() {
         when(storage.getUserMap()).thenReturn(getDefaultTestMap());
 
         User user = userRepository.createUser(new UserDto(3L, "Justin Bieber", "JustinBieber@gmail.com"));
@@ -72,6 +72,14 @@ class UserRepositoryTest {
     void createUserIdExists() {
         when(storage.getUserMap()).thenReturn(getDefaultTestMap());
         assertNull(userRepository.createUser(new UserDto(1L, "Justin Bieber", "JustinBieber@gmail.com")));
+        assertEquals(2, storage.getUserMap().size());
+    }
+
+    @Test
+    void createUserEmailExists() {
+        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
+        assertNull(userRepository.createUser(new UserDto(3L, "Justin Bieber", "JohnDoe@gmail.com")));
+        assertEquals(2, storage.getUserMap().size());
     }
 
     @Test
@@ -92,6 +100,12 @@ class UserRepositoryTest {
         User user = userRepository.updateUser(new UserDto(3L, "Justin Bieber", "jb@gmail.com"));
         assertNull(user);
         assertEquals(2, storage.getUserMap().size());
+    }
+
+    @Test
+    void setUsedEmailToUpdatedUser() {
+        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
+        assertNull(userRepository.updateUser(new UserDto(3L, "Jonathan Doe", "JaneDoe@gmail.com")));
     }
 
     @Test

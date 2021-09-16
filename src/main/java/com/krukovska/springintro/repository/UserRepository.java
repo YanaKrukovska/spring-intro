@@ -44,7 +44,7 @@ public class UserRepository {
         Map<Long, User> userMap = storage.getUserMap();
 
         long eventId = user.getId();
-        if (userMap.containsKey(eventId)) {
+        if (userMap.containsKey(eventId) || isEmailUsed(user.getEmail())) {
             return null;
         }
         userMap.put(eventId, user);
@@ -55,7 +55,7 @@ public class UserRepository {
         Map<Long, User> userMap = storage.getUserMap();
 
         long userId = user.getId();
-        if (!userMap.containsKey(userId)) {
+        if (!userMap.containsKey(userId) || isEmailUsed(user.getEmail())) {
             return null;
         }
         userMap.put(userId, user);
@@ -70,6 +70,10 @@ public class UserRepository {
             return true;
         }
         return false;
+    }
+
+    private boolean isEmailUsed(String email) {
+        return storage.getUserMap().values().stream().anyMatch(entry -> entry.getEmail().equals(email));
     }
 
     private List<User> getPage(List<User> entities, int pageSize, int pageNum) {
