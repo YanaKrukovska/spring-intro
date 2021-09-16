@@ -3,7 +3,6 @@ package com.krukovska.springintro.repository;
 import com.krukovska.springintro.model.Event;
 import com.krukovska.springintro.model.Ticket;
 import com.krukovska.springintro.model.User;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
