@@ -2,6 +2,7 @@ package com.krukovska.springintro.repository;
 
 import com.krukovska.springintro.model.User;
 import com.krukovska.springintro.model.dto.UserDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,10 +25,13 @@ class UserRepositoryTest {
     @InjectMocks
     private UserRepository userRepository;
 
+    @BeforeEach
+    void setMockStorage(){
+        when(storage.getUserMap()).thenReturn(getTestMap());
+    }
+
     @Test
     void findUserByIdExists() {
-        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
-
         User result = userRepository.getUserById(2L);
         assertNotNull(result);
         assertEquals(2L, result.getId());
@@ -37,14 +41,11 @@ class UserRepositoryTest {
 
     @Test
     void findUserByIdNotExists() {
-        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
-        assertNull(userRepository.getUserById(3L));
+        assertNull(userRepository.getUserById(30L));
     }
 
     @Test
     void findUserByEmailExists() {
-        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
-
         User result = userRepository.getUserByEmail("JaneDoe@gmail.com");
         assertNotNull(result);
         assertEquals(2L, result.getId());
@@ -54,38 +55,32 @@ class UserRepositoryTest {
 
     @Test
     void findUserByEmailNotExists() {
-        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
         assertNull(userRepository.getUserByEmail("OlegVynnyk@gmail.com"));
     }
 
     @Test
     void createUserIdAndEmailNotExist() {
-        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
-
-        User user = userRepository.createUser(new UserDto(3L, "Justin Bieber", "JustinBieber@gmail.com"));
+        User user = userRepository.createUser(new UserDto(5L, "Justin Bieber", "JB@gmail.com"));
 
         assertNotNull(user);
-        assertEquals(3L, user.getId());
+        assertEquals(5L, user.getId());
+        assertEquals(5, storage.getUserMap().size());
     }
 
     @Test
     void createUserIdExists() {
-        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
         assertNull(userRepository.createUser(new UserDto(1L, "Justin Bieber", "JustinBieber@gmail.com")));
-        assertEquals(2, storage.getUserMap().size());
+        assertEquals(4, storage.getUserMap().size());
     }
 
     @Test
     void createUserEmailExists() {
-        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
-        assertNull(userRepository.createUser(new UserDto(3L, "Justin Bieber", "JohnDoe@gmail.com")));
-        assertEquals(2, storage.getUserMap().size());
+        assertNull(userRepository.createUser(new UserDto(5L, "Justin Bieber", "JohnDoe@gmail.com")));
+        assertEquals(4, storage.getUserMap().size());
     }
 
     @Test
     void updateExistingUser() {
-        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
-
         User user = userRepository.updateUser(new UserDto(1L, "Jonathan Doe", "jd@gmail.com"));
         assertNotNull(user);
         assertEquals(1L, user.getId());
@@ -95,37 +90,30 @@ class UserRepositoryTest {
 
     @Test
     void updateNotExistingUser() {
-        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
-
-        User user = userRepository.updateUser(new UserDto(3L, "Justin Bieber", "jb@gmail.com"));
+        User user = userRepository.updateUser(new UserDto(30L, "Justin Bieber", "jb@gmail.com"));
         assertNull(user);
-        assertEquals(2, storage.getUserMap().size());
+        assertEquals(4, storage.getUserMap().size());
     }
 
     @Test
     void setUsedEmailToUpdatedUser() {
-        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
         assertNull(userRepository.updateUser(new UserDto(3L, "Jonathan Doe", "JaneDoe@gmail.com")));
     }
 
     @Test
     void deleteUserExists() {
-        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
         assertTrue(userRepository.deleteUser(2L));
-        assertEquals(1, storage.getUserMap().size());
+        assertEquals(3, storage.getUserMap().size());
     }
 
     @Test
     void deleteUserNotExists() {
-        when(storage.getUserMap()).thenReturn(getDefaultTestMap());
-        assertFalse(userRepository.deleteUser(3L));
-        assertEquals(2, storage.getUserMap().size());
+        assertFalse(userRepository.deleteUser(30L));
+        assertEquals(4, storage.getUserMap().size());
     }
 
     @Test
     void getUsersByNameExistsPageable() {
-        when(storage.getUserMap()).thenReturn(getBigTestMap());
-
         List<User> page1 = userRepository.getUsersByName("John Doe", 1, 1);
         assertEquals(1, page1.size());
         assertEquals(1L, page1.get(0).getId());
@@ -137,20 +125,11 @@ class UserRepositoryTest {
 
     @Test
     void getEventsForDateNotExistsPageable() {
-        when(storage.getUserMap()).thenReturn(getBigTestMap());
-
         List<User> result = userRepository.getUsersByName("Oleg Vynnyk", 1, 1);
         assertEquals(0, result.size());
     }
 
-    private Map<Long, User> getDefaultTestMap() {
-        Map<Long, User> eventMap = new HashMap<>();
-        eventMap.put(1L, new UserDto(1L, "John Doe", "JohnDoe@gmail.com"));
-        eventMap.put(2L, new UserDto(2L, "Jane Doe", "JaneDoe@gmail.com"));
-        return eventMap;
-    }
-
-    private Map<Long, User> getBigTestMap() {
+    private Map<Long, User> getTestMap() {
         Map<Long, User> eventMap = new HashMap<>();
         eventMap.put(1L, new UserDto(1L, "John Doe", "JohnDoe@gmail.com"));
         eventMap.put(2L, new UserDto(2L, "Jane Doe", "JaneDoe@gmail.com"));
