@@ -32,23 +32,23 @@ class UserRepositoryTest {
 
     @Test
     void findUserByIdExists() {
-        User result = userRepository.getUserById(2L);
+        User result = userRepository.getUserById(2);
         assertNotNull(result);
-        assertEquals(2L, result.getId());
+        assertEquals(2, result.getId());
         assertEquals("Jane Doe", result.getName());
         assertEquals("JaneDoe@gmail.com", result.getEmail());
     }
 
     @Test
     void findUserByIdNotExists() {
-        assertNull(userRepository.getUserById(30L));
+        assertNull(userRepository.getUserById(30));
     }
 
     @Test
     void findUserByEmailExists() {
         User result = userRepository.getUserByEmail("JaneDoe@gmail.com");
         assertNotNull(result);
-        assertEquals(2L, result.getId());
+        assertEquals(2, result.getId());
         assertEquals("Jane Doe", result.getName());
         assertEquals("JaneDoe@gmail.com", result.getEmail());
     }
@@ -60,55 +60,55 @@ class UserRepositoryTest {
 
     @Test
     void createUserIdAndEmailNotExist() {
-        User user = userRepository.createUser(new UserDto(5L, "Justin Bieber", "JB@gmail.com"));
+        User user = userRepository.createUser(new UserDto(5, "Justin Bieber", "JB@gmail.com"));
 
         assertNotNull(user);
-        assertEquals(5L, user.getId());
+        assertEquals(5, user.getId());
         assertEquals(5, storage.getUserMap().size());
     }
 
     @Test
     void createUserIdExists() {
-        assertNull(userRepository.createUser(new UserDto(1L, "Justin Bieber", "JustinBieber@gmail.com")));
+        assertNull(userRepository.createUser(new UserDto(1, "Justin Bieber", "JustinBieber@gmail.com")));
         assertEquals(4, storage.getUserMap().size());
     }
 
     @Test
     void createUserEmailExists() {
-        assertNull(userRepository.createUser(new UserDto(5L, "Justin Bieber", "JohnDoe@gmail.com")));
+        assertNull(userRepository.createUser(new UserDto(5, "Justin Bieber", "JohnDoe@gmail.com")));
         assertEquals(4, storage.getUserMap().size());
     }
 
     @Test
     void updateExistingUser() {
-        User user = userRepository.updateUser(new UserDto(1L, "Jonathan Doe", "jd@gmail.com"));
+        User user = userRepository.updateUser(new UserDto(1, "Jonathan Doe", "jd@gmail.com"));
         assertNotNull(user);
-        assertEquals(1L, user.getId());
+        assertEquals(1, user.getId());
         assertEquals("Jonathan Doe", user.getName());
         assertEquals("jd@gmail.com", user.getEmail());
     }
 
     @Test
     void updateNotExistingUser() {
-        User user = userRepository.updateUser(new UserDto(30L, "Justin Bieber", "jb@gmail.com"));
+        User user = userRepository.updateUser(new UserDto(30, "Justin Bieber", "jb@gmail.com"));
         assertNull(user);
         assertEquals(4, storage.getUserMap().size());
     }
 
     @Test
     void setUsedEmailToUpdatedUser() {
-        assertNull(userRepository.updateUser(new UserDto(3L, "Jonathan Doe", "JaneDoe@gmail.com")));
+        assertNull(userRepository.updateUser(new UserDto(3, "Jonathan Doe", "JaneDoe@gmail.com")));
     }
 
     @Test
     void deleteUserExists() {
-        assertTrue(userRepository.deleteUser(2L));
+        assertTrue(userRepository.deleteUser(2));
         assertEquals(3, storage.getUserMap().size());
     }
 
     @Test
     void deleteUserNotExists() {
-        assertFalse(userRepository.deleteUser(30L));
+        assertFalse(userRepository.deleteUser(30));
         assertEquals(4, storage.getUserMap().size());
     }
 
@@ -116,11 +116,11 @@ class UserRepositoryTest {
     void getUsersByNameExistsPageable() {
         List<User> page1 = userRepository.getUsersByName("John Doe", 1, 1);
         assertEquals(1, page1.size());
-        assertEquals(1L, page1.get(0).getId());
+        assertEquals(1, page1.get(0).getId());
 
         List<User> page2 = userRepository.getUsersByName("John Doe", 1, 2);
         assertEquals(1, page2.size());
-        assertEquals(4L, page2.get(0).getId());
+        assertEquals(4, page2.get(0).getId());
     }
 
     @Test
@@ -131,10 +131,10 @@ class UserRepositoryTest {
 
     private Map<Long, User> getTestMap() {
         Map<Long, User> eventMap = new HashMap<>();
-        eventMap.put(1L, new UserDto(1L, "John Doe", "JohnDoe@gmail.com"));
-        eventMap.put(2L, new UserDto(2L, "Jane Doe", "JaneDoe@gmail.com"));
-        eventMap.put(3L, new UserDto(3L, "Justin Bieber", "JustinBieber@gmail.com"));
-        eventMap.put(4L, new UserDto(4L, "John Doe", "jxd@gmail.com"));
+        eventMap.put(1L, new UserDto(1, "John Doe", "JohnDoe@gmail.com"));
+        eventMap.put(2L, new UserDto(2, "Jane Doe", "JaneDoe@gmail.com"));
+        eventMap.put(3L, new UserDto(3, "Justin Bieber", "JustinBieber@gmail.com"));
+        eventMap.put(4L, new UserDto(4, "John Doe", "jxd@gmail.com"));
         return eventMap;
     }
 

@@ -1,24 +1,22 @@
 package com.krukovska.springintro.model.dto;
 
-import com.krukovska.springintro.model.Event;
 import com.krukovska.springintro.model.Ticket;
-import com.krukovska.springintro.model.User;
 
 public class TicketDto implements Ticket {
 
     private long id;
-    private Event event;
-    private User user;
+    private long eventId;
+    private long userId;
     private Category category;
     private int place;
 
     public TicketDto() {
     }
 
-    public TicketDto(long id, Event event, User user, Category category, int place) {
+    public TicketDto(long id, long eventId, long userId, Category category, int place) {
         this.id = id;
-        this.event = event;
-        this.user = user;
+        this.eventId = eventId;
+        this.userId = userId;
         this.category = category;
         this.place = place;
     }
@@ -35,22 +33,22 @@ public class TicketDto implements Ticket {
 
     @Override
     public long getEventId() {
-        return event.getId();
+        return eventId;
     }
 
     @Override
     public void setEventId(long eventId) {
-        this.event.setId(eventId);
+        this.eventId = eventId;
     }
 
     @Override
     public long getUserId() {
-        return user.getId();
+        return userId;
     }
 
     @Override
     public void setUserId(long userId) {
-        this.user.setId(userId);
+        this.userId = userId;
     }
 
     @Override
