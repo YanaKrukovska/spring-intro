@@ -1,0 +1,54 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "JohnDoe@gmail.com"
+    },
+    {
+      "id": 2,
+      "name": "Jane Doe",
+      "email": "JaneDoe@gmail.com"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "title": "Concert",
+      "date": "2021-09-19T17:00:00.511Z"
+    },
+    {
+      "id": 2,
+      "title": "Game",
+      "date": "2021-10-21T18:00:00.511Z"
+    },
+    {
+      "id": 3,
+      "title": "Wedding",
+      "date": "2021-12-30T12:30:00.511Z"
+    }
+  ],
+  "tickets": [
+    {
+      "id": 1,
+      "eventId": 1,
+      "userId": 1,
+      "category": "BAR",
+      "place": 1
+    },
+    {
+      "id": 2,
+      "eventId": 1,
+      "userId": 2,
+      "category": "PREMIUM",
+      "place": 2
+    },
+    {
+      "id": 3,
+      "eventId": 2,
+      "userId": 3,
+      "category": "PREMIUM",
+      "place": 45
+    }
+  ]
+}
