@@ -70,4 +70,10 @@ public class TicketDto implements Ticket {
     public void setPlace(int place) {
         this.place = place;
     }
+
+    @Override
+    public String toString() {
+        return "Ticket {id=" + id + ", eventId=" + eventId + ", userId=" + userId + ", category=" + category +
+                ", place=" + place + '}';
+    }
 }
