@@ -8,12 +8,10 @@ import com.krukovska.springintro.service.EventService;
 import com.krukovska.springintro.service.TicketService;
 import com.krukovska.springintro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 
-@Component
 public class BookingFacadeImpl implements BookingFacade {
 
     private final EventService eventService;

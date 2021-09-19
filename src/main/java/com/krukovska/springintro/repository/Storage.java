@@ -7,18 +7,18 @@ import com.krukovska.springintro.model.User;
 import com.krukovska.springintro.model.dto.EventDto;
 import com.krukovska.springintro.model.dto.TicketDto;
 import com.krukovska.springintro.model.dto.UserDto;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
-@Repository
+@Slf4j
 public class Storage {
 
     @Value("${data.path}")
@@ -32,14 +32,11 @@ public class Storage {
     private void init() {
         var parser = new JSONParser();
         try {
-
             var jsonObject = (JSONObject) parser.parse(new FileReader(filePath));
             var gson = new Gson();
-
             parseUsers((JSONArray) jsonObject.get("users"), gson);
             parseEvents((JSONArray) jsonObject.get("events"), gson);
             parseTickets((JSONArray) jsonObject.get("tickets"), gson);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,6 +48,7 @@ public class Storage {
         for (User user : users) {
             getUserMap().put(user.getId(), user);
         }
+        log.debug("Parsed users data");
     }
 
     private void parseEvents(JSONArray jsonArray, Gson gson) {
@@ -58,6 +56,7 @@ public class Storage {
         for (Event event : events) {
             getEventMap().put(event.getId(), event);
         }
+        log.debug("Parsed events data");
     }
 
     private void parseTickets(JSONArray jsonArray, Gson gson) {
@@ -65,6 +64,7 @@ public class Storage {
         for (Ticket ticket : tickets) {
             getTicketMap().put(ticket.getId(), ticket);
         }
+        log.debug("Parsed tickets data");
     }
 
     public Map<Long, Event> getEventMap() {
