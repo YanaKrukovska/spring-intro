@@ -7,7 +7,6 @@ import com.krukovska.springintro.model.dto.TicketDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,21 +41,21 @@ public class TicketRepository {
     }
 
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
-        List<Ticket> tickets = storage.getTicketMap().values()
+        return storage.getTicketMap().values()
                 .stream()
                 .filter(ticket -> ticket.getUserId() == user.getId())
+                .skip((long) pageSize * (pageNum - 1))
+                .limit(pageSize)
                 .collect(Collectors.toList());
-
-        return getPage(tickets, pageSize, pageNum);
     }
 
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
-        List<Ticket> tickets = storage.getTicketMap().values()
+        return storage.getTicketMap().values()
                 .stream()
                 .filter(ticket -> ticket.getEventId() == event.getId())
+                .skip((long) pageSize * (pageNum - 1))
+                .limit(pageSize)
                 .collect(Collectors.toList());
-
-        return getPage(tickets, pageSize, pageNum);
     }
 
     public boolean cancelTicket(long ticketId) {
@@ -68,15 +67,6 @@ public class TicketRepository {
 
         ticketMap.remove(ticketId);
         return true;
-    }
-
-    private List<Ticket> getPage(List<Ticket> entities, int pageSize, int pageNum) {
-        int start = (pageNum - 1) * pageSize;
-        if (entities == null || entities.size() <= start) {
-            return Collections.emptyList();
-        }
-
-        return entities.subList(start, Math.min(start + pageSize, entities.size()));
     }
 
     private long getNextTicketId() {

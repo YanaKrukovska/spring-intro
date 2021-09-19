@@ -4,7 +4,6 @@ import com.krukovska.springintro.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,12 +31,12 @@ public class UserRepository {
     }
 
     public List<User> getUsersByName(String name, int pageSize, int pageNum) {
-        List<User> allUsers = storage.getUserMap().values()
+        return storage.getUserMap().values()
                 .stream()
                 .filter(entry -> entry.getName().equals(name))
+                .skip((long) pageSize * (pageNum - 1))
+                .limit(pageSize)
                 .collect(Collectors.toList());
-
-        return getPage(allUsers, pageSize, pageNum);
     }
 
     public User createUser(User user) {
@@ -76,12 +75,4 @@ public class UserRepository {
         return storage.getUserMap().values().stream().anyMatch(entry -> entry.getEmail().equals(email));
     }
 
-    private List<User> getPage(List<User> entities, int pageSize, int pageNum) {
-        int start = (pageNum - 1) * pageSize;
-        if (entities == null || entities.size() <= start) {
-            return Collections.emptyList();
-        }
-
-        return entities.subList(start, Math.min(start + pageSize, entities.size()));
-    }
 }
