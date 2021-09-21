@@ -13,7 +13,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.annotation.PostConstruct;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +27,6 @@ public class Storage {
     private final Map<Long, Ticket> ticketMap = new HashMap<>();
     private final Map<Long, User> userMap = new HashMap<>();
 
-    @PostConstruct
     private void init() {
         var parser = new JSONParser();
         try {

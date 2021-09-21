@@ -25,7 +25,7 @@ public class EventRepository {
     }
 
     public Event getEventByTitle(String title) {
-        log.debug("Getting event by title " + title);
+        log.debug("Getting event by title {}", title);
         return storage.getEventMap().values()
                 .stream()
                 .filter(entry -> entry.getTitle().contains(title))

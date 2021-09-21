@@ -21,7 +21,7 @@
     <bean id="eventService" class="com.krukovska.springintro.service.impl.EventServiceImpl"/>
     <bean id="ticketService" class="com.krukovska.springintro.service.impl.TicketServiceImpl"/>
 
-    <bean id="storage" class="com.krukovska.springintro.repository.Storage"/>
+    <bean id="storage" class="com.krukovska.springintro.repository.Storage" init-method="init"/>
 
     <bean id="bookingFacade" class="com.krukovska.springintro.facade.impl.BookingFacadeImpl"/>
 
